@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Geekburger.Order.Contract" Version="1.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Geekburger.Order.Contract\Geekburger.Order.Contract.csproj" />
   </ItemGroup>
 
 </Project>
