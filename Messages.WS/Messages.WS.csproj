@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-Messages.WS-E985D563-EF10-44F3-9960-C233D8540ECE</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Geekburger.Order.Contract\Geekburger.Order.Contract.csproj" />
+    <ProjectReference Include="..\Messages.Service\Messages.Service.csproj" />
+  </ItemGroup>
+</Project>

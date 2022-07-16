@@ -1,4 +1,5 @@
 ﻿using Geekburger.Order.Contract.Enums;
+using Messages.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Geekburger.Order.Contract.Messages
 {
-    public class OrderChanged
+    public class OrderChanged : IMessage
     {
         public int OrderId { get; set; }
 
