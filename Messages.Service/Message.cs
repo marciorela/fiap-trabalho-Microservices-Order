@@ -1,5 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Azure.Messaging.ServiceBus.Administration;
+using Geekburger.Order.Contract.Messages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Newtonsoft.Json;
@@ -7,11 +8,13 @@ using System.Text;
 
 namespace Messages.Service
 {
-    public class Message: IDisposable
+    public class Message : IDisposable
     {
         private ServiceBusClient s_client;
         private ServiceBusAdministrationClient s_adminClient;
         private const string SubscriptionName = "paulista_store";
+        protected string _topicName = "";
+        protected CreateRuleOptions _rule = new();
 
         public Message()
         {
@@ -24,34 +27,67 @@ namespace Messages.Service
 
             s_client = new ServiceBusClient(connection);
             s_adminClient = new ServiceBusAdministrationClient(connection);
+
+            Configure();
+
+            Task.Run(async () => await CreateTopic(_topicName)).Wait();
+            Task.Run(async () => await CreateSubscription(_topicName, SubscriptionName)).Wait();
+            Task.Run(async () => await s_adminClient.DeleteRuleAsync(_topicName, SubscriptionName, RuleProperties.DefaultRuleName)).Wait();
+            Task.Run(async () => await s_adminClient.CreateRuleAsync(_topicName, SubscriptionName, new CreateRuleOptions(RuleProperties.DefaultRuleName, new TrueRuleFilter()))).Wait();
         }
 
-        public async Task Send(string topicName, IMessage message)
+        virtual protected void Configure()
         {
-            var s_sender = s_client.CreateSender(topicName);
+
+        }
+
+        public async Task Send(IMessage message)
+        {
+            var s_sender = s_client.CreateSender(_topicName);
 
             try
             {
-                await CreateTopic(topicName);
-
-                await CreateSubscription(topicName, SubscriptionName);
-
-                await s_adminClient.DeleteRuleAsync(topicName, SubscriptionName, RuleProperties.DefaultRuleName);
-                await s_adminClient.CreateRuleAsync(topicName, SubscriptionName, new CreateRuleOptions(RuleProperties.DefaultRuleName, new TrueRuleFilter()));
-
-                ServiceBusMessage msg = new();
-
                 var bodySerialized = JsonConvert.SerializeObject(message);
                 var bodyByteArray = Encoding.UTF8.GetBytes(bodySerialized);
 
-                msg.Body = new BinaryData(bodyByteArray);
-                msg.MessageId = Guid.NewGuid().ToString();
+                ServiceBusMessage msg = new()
+                {
+                    Body = new BinaryData(bodyByteArray),
+                    MessageId = Guid.NewGuid().ToString()
+                };
+                //msg.CorrelationId = Guid.NewGuid().ToString();
 
                 await s_sender.SendMessageAsync(msg);
             }
             finally
             {
                 await s_sender.CloseAsync();
+            }
+        }
+
+        public async Task<MessageBase?> Receive()
+        {
+            await using ServiceBusReceiver s_receiver = s_client.CreateReceiver(_topicName, SubscriptionName,
+                new ServiceBusReceiverOptions { ReceiveMode = ServiceBusReceiveMode.ReceiveAndDelete });
+
+            try
+            {
+                var receivedMessage = await s_receiver.ReceiveMessageAsync(TimeSpan.FromSeconds(1));
+                if (receivedMessage != null)
+                {
+                    return new MessageBase()
+                    {
+                        MessageId = Guid.Parse(receivedMessage.MessageId),
+                        CorrelationId = (!string.IsNullOrWhiteSpace(receivedMessage.CorrelationId) ? Guid.Parse(receivedMessage.CorrelationId) : null),
+                        Body = receivedMessage.Body
+                    };
+                }
+
+                return null;
+            }
+            finally
+            {
+                await s_receiver.CloseAsync();
             }
         }
 
@@ -68,7 +104,8 @@ namespace Messages.Service
                 }
             }
 
-            if (!found) { 
+            if (!found)
+            {
                 await s_adminClient.CreateTopicAsync(topicName);
             }
         }
@@ -88,13 +125,8 @@ namespace Messages.Service
 
             if (!found)
             {
-                await s_adminClient.CreateSubscriptionAsync(topicName, subscriptionName);
+                await s_adminClient.CreateSubscriptionAsync(new CreateSubscriptionOptions(topicName, subscriptionName), _rule);
             }
-        }
-
-        public void Receive()
-        {
-
         }
 
         public async void Dispose()
