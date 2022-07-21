@@ -1,5 +1,6 @@
 using Geekburger.Order.Contract.Messages;
 using Messages.Service;
+using Messages.Service.Models;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -9,11 +10,16 @@ namespace Messages.WS
     {
         private readonly ILogger<Worker> _logger;
         private readonly IConfiguration _config;
+        private List<string> lojas = new();
+        private List<Message> messages = new();
 
         public Worker(ILogger<Worker> logger, IConfiguration config)
         {
             _logger = logger;
             _config = config;
+
+            lojas.Add("paulista_store");
+            lojas.Add("morumbi_store");
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -25,34 +31,31 @@ namespace Messages.WS
                 StoreName = "paulista"
             };
 
-            var mensagem = new MessageNewOrder();
-            await mensagem.Send(msg);
+            var msgNewOrderPaulista = new MessageNewOrder("paulista_store");
+            await msgNewOrderPaulista.Send(msg);
+
+            foreach (var loja in lojas)
+            {
+                messages.Add(new MessageNewOrder(loja));
+            }
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                var readed = await mensagem.Receive();
-                if (readed != null)
+                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+
+                foreach (var message in messages)
                 {
-                    ProcessaMensagem(readed);
+                    var readed = await message.Receive();
+                    if (readed != null)
+                    {
+                        message.Process(readed);
+                    }
+
                 }
 
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                //await Task.Delay(1000, stoppingToken);
+                await Task.Delay(200, stoppingToken);
             }
         }
 
-        private void ProcessaMensagem(MessageBase obj)
-        {
-            Console.WriteLine("Recebido:");
-            Console.WriteLine(obj.MessageId.ToString());
-
-            var x = Encoding.UTF8.GetString(obj.Body);
-            var y = JsonConvert.DeserializeObject<OrderChanged>(x);
-
-            Console.WriteLine(y.OrderId);
-            Console.WriteLine(y.State);
-            Console.WriteLine(y.StoreName);
-
-        }
     }
 }
