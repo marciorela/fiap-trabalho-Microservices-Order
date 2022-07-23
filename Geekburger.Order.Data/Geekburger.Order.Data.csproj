@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GeekBurguer.UI.Contract" Version="20.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Geekburger.Order.Database\Geekburger.Order.Database.csproj" />
+    <ProjectReference Include="..\Geekburger.Order.Domain\Geekburger.Order.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
