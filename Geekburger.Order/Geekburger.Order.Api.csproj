@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Geekburger.Order.Contract\Geekburger.Order.Contract.csproj" />
+    <ProjectReference Include="..\Geekburger.Order.Services\Geekburger.Order.Services.csproj" />
   </ItemGroup>
 
 </Project>

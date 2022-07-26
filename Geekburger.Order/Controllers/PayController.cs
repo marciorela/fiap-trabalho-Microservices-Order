@@ -1,6 +1,7 @@
 using Geekburger.Order.Contract.DTOs;
 using Geekburger.Order.Contract.Enums;
 using Geekburger.Order.Contract.Messages;
+using Geekburger.Order.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Geekburger.Order.Controllers
@@ -10,31 +11,18 @@ namespace Geekburger.Order.Controllers
     public class PayController : ControllerBase
     {
         private readonly ILogger<PayController> _logger;
-        private static int _quantidade = 0;
+        private readonly PaymentService _paymentService;
 
-        public PayController(ILogger<PayController> logger)
+        public PayController(ILogger<PayController> logger, PaymentService paymentService)
         {
             _logger = logger;
+            _paymentService = paymentService;
         }
 
         [HttpPost("pay")]
-        public IActionResult PostPay(PayRequest pay)
+        public async Task<IActionResult> PostPay(PayRequest pay)
         {
-            var msgOrderChanged = new OrderChanged()
-            {
-                OrderId = pay.OrderId,
-                StoreName = pay.StoreName,
-                State = EnumOrderState.Paid
-            };
-
-            if (++_quantidade > 4)
-            {
-                _quantidade = 0;
-                msgOrderChanged.State = EnumOrderState.Canceled;
-            };
-
-
-
+            await _paymentService.RegisterPayment(pay);
 
             return Ok();
         }

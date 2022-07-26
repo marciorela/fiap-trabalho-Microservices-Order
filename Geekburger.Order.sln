@@ -9,15 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geekburger.Order.Contract",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messages.WS", "Messages.WS\Messages.WS.csproj", "{C3D7DAA2-1143-424F-A868-E2217EF1FF57}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Message.Sample", "Message.Sample\Message.Sample.csproj", "{2742189E-9D55-4D64-9B2B-FB985DE5D051}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messages.Service", "..\Geekburger.Services\Messages.Service\Messages.Service.csproj", "{96718B6F-61E3-43F3-99AD-F12B98FCF5FD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geekburger.Order.Database", "Geekburger.Order.Database\Geekburger.Order.Database.csproj", "{E4D93A20-008F-4035-A2EF-377C087FB12E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geekburger.Order.Domain", "Geekburger.Order.Domain\Geekburger.Order.Domain.csproj", "{83EFA7D2-2022-4B33-BB1E-993DF09D2FBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geekburger.Order.Domain", "Geekburger.Order.Domain\Geekburger.Order.Domain.csproj", "{83EFA7D2-2022-4B33-BB1E-993DF09D2FBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geekburger.Order.Data", "Geekburger.Order.Data\Geekburger.Order.Data.csproj", "{B0FDB9D3-6DB1-49BE-9B5E-9FCC538B0E73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geekburger.Order.Data", "Geekburger.Order.Data\Geekburger.Order.Data.csproj", "{B0FDB9D3-6DB1-49BE-9B5E-9FCC538B0E73}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geekburger.Order.Services", "Geekburger.Order.Services\Geekburger.Order.Services.csproj", "{59D48264-D371-46B6-B021-68D1C4835809}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,6 @@ Global
 		{C3D7DAA2-1143-424F-A868-E2217EF1FF57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3D7DAA2-1143-424F-A868-E2217EF1FF57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3D7DAA2-1143-424F-A868-E2217EF1FF57}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2742189E-9D55-4D64-9B2B-FB985DE5D051}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2742189E-9D55-4D64-9B2B-FB985DE5D051}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2742189E-9D55-4D64-9B2B-FB985DE5D051}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2742189E-9D55-4D64-9B2B-FB985DE5D051}.Release|Any CPU.Build.0 = Release|Any CPU
 		{96718B6F-61E3-43F3-99AD-F12B98FCF5FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{96718B6F-61E3-43F3-99AD-F12B98FCF5FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96718B6F-61E3-43F3-99AD-F12B98FCF5FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +53,10 @@ Global
 		{B0FDB9D3-6DB1-49BE-9B5E-9FCC538B0E73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0FDB9D3-6DB1-49BE-9B5E-9FCC538B0E73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0FDB9D3-6DB1-49BE-9B5E-9FCC538B0E73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59D48264-D371-46B6-B021-68D1C4835809}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59D48264-D371-46B6-B021-68D1C4835809}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59D48264-D371-46B6-B021-68D1C4835809}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59D48264-D371-46B6-B021-68D1C4835809}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

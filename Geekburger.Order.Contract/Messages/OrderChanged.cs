@@ -14,6 +14,6 @@ namespace Geekburger.Order.Contract.Messages
 
         public string StoreName { get; set; }
 
-        public EnumOrderState State { get; set; }
+        public string State { get; set; }
     }
 }

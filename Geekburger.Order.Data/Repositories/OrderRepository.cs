@@ -1,5 +1,9 @@
-﻿using Geekburger.Order.Database;
+﻿using Geekburger.Order.Contract.DTOs;
+using Geekburger.Order.Contract.Enums;
+using Geekburger.Order.Database;
+using Geekburger.Order.Domain.Entities;
 using GeekBurguer.UI.Contract;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,5 +47,44 @@ namespace Geekburger.Order.Data.Repositories
             await _ctx.SaveChangesAsync();
         }
 
+        public async Task UpdateOrderState(int orderId, int requesterId, EnumOrderState state)
+        {
+            var payment = await GetById(orderId, requesterId);
+            if (payment != null)
+            {
+                payment.State = state.ToString();
+                await _ctx.SaveChangesAsync();
+            }
+        }
+
+        public async Task<Payment?> GetById(int orderId, int requesterId)
+        {
+            return await _ctx.OrdersPayments.FirstOrDefaultAsync(p => p.OrderId == orderId && p.RequesterId == requesterId);
+        }
+
+        public async Task<Payment> AddPayment(PayRequest pay)
+        {
+            var payment = new Domain.Entities.Payment()
+            {
+                CardNumber = pay.CardNumber,
+                CardOwnerName = pay.CardOwnerName,
+                ExpirationDate = pay.ExpirationDate,
+                PayType = pay.PayType,
+                SecurityCode = pay.SecurityCode,
+                StoreName = pay.StoreName,
+                OrderId = pay.OrderId,
+                RequesterId = pay.RequesterId
+            };
+
+            await _ctx.OrdersPayments.AddAsync(payment);
+            await _ctx.SaveChangesAsync();
+
+            return payment;
+        }
+
+        public async Task<bool> PaymentExists(int orderId, int requesterId)
+        {
+            return await GetById(orderId, requesterId) != null;
+        }
     }
 }

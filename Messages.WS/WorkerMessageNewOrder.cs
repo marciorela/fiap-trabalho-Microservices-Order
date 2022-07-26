@@ -30,18 +30,18 @@ namespace Messages.WS
         {
             var msg = new NewOrder()
             {
-                orderId = 132,
+                orderId = 4534,
                 storeName = "paulista",
-                total = 3435.23M,
+                total = 2132.65M,
                 products = new List<ProductToGet>()
                 {
-                    new ProductToGet() { ProductId = "423423" },
-                    new ProductToGet() { ProductId = "756776" },
+                    new ProductToGet() { ProductId = "121" },
+                    new ProductToGet() { ProductId = "42354" },
                 },
                 productionId = new List<int>()
                 {
-                    43534,
-                    45,
+                    343444,
+                    3433,
                 }
             };
             var msgNewOrderPaulista = new MessageNewOrder("paulista_store");
