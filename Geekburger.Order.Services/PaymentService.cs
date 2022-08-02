@@ -3,17 +3,21 @@ using Geekburger.Order.Contract.Enums;
 using Geekburger.Order.Contract.Messages;
 using Geekburger.Order.Data.Repositories;
 using Messages.Service;
+using Messages.Service.Messages;
+using Microsoft.Extensions.Configuration;
 
 namespace Geekburger.Order.Services
 {
     public class PaymentService
     {
         private readonly OrderRepository _orderRepository;
+        private readonly IConfiguration _config;
         private static int _quantidade = 0;
 
-        public PaymentService(OrderRepository orderRepository)
+        public PaymentService(OrderRepository orderRepository, IConfiguration config)
         {
             _orderRepository = orderRepository;
+            _config = config;
         }
 
         public async Task RegisterPayment(PayRequest pay)
@@ -58,7 +62,7 @@ namespace Geekburger.Order.Services
                 State = state.ToString()
             };
 
-            var msg = new MessageOrderChanged(pay.StoreName);
+            var msg = new MessageOrderChanged(_config.GetSection("SubscriptionName").Value);
             await msg.Send(msgOrderChanged);
         }
     }

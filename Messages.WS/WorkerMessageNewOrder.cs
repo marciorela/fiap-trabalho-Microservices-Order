@@ -2,6 +2,7 @@ using Geekburger.Order.Contract.Messages;
 using Geekburger.Order.Data.Repositories;
 using GeekBurguer.UI.Contract;
 using Messages.Service;
+using Messages.Service.Messages;
 using Messages.Service.Models;
 using Newtonsoft.Json;
 using System.Text;
@@ -13,56 +14,55 @@ namespace Messages.WS
         private readonly ILogger<WorkerMessageNewOrder> _logger;
         private readonly IConfiguration _config;
         private readonly OrderRepository _orderRepository;
-        private readonly List<string> lojas = new();
-        private readonly List<Message> messages = new();
 
         public WorkerMessageNewOrder(ILogger<WorkerMessageNewOrder> logger, IConfiguration config, OrderRepository orderRepository)
         {
             _logger = logger;
             _config = config;
             _orderRepository = orderRepository;
-
-            lojas.Add("paulista_store");
-            lojas.Add("morumbi_store");
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var msg = new NewOrder()
-            {
-                orderId = 4534,
-                storeName = "paulista",
-                total = 2132.65M,
-                products = new List<ProductToGet>()
-                {
-                    new ProductToGet() { ProductId = "121" },
-                    new ProductToGet() { ProductId = "42354" },
-                },
-                productionId = new List<int>()
-                {
-                    343444,
-                    3433,
-                }
-            };
-            var msgNewOrderPaulista = new MessageNewOrder("paulista_store");
-            await msgNewOrderPaulista.Send(msg);
+            //var msg = new NewOrder()
+            //{
+            //    orderId = 4534,
+            //    storeName = "paulista",
+            //    total = 2132.65M,
+            //    products = new List<ProductToGet>()
+            //    {
+            //        new ProductToGet() { ProductId = "121" },
+            //        new ProductToGet() { ProductId = "42354" },
+            //    },
+            //    productionId = new List<int>()
+            //    {
+            //        343444,
+            //        3433,
+            //    }
+            //};
+            //var msgNewOrderPaulista = new MessageNewOrder("paulista");
+            //await msgNewOrderPaulista.Send(msg);
 
-            foreach (var loja in lojas)
-            {
-                messages.Add(new MessageNewOrder(loja));
-            }
+            //var msg = new OrderChanged()
+            //{
+            //    OrderId = 3435,
+            //    State = "Paid",
+            //    StoreName = "paulista"
+            //};
+
+            //var msgOrderChanged = new MessageOrderChanged("paulista");
+            //await msgOrderChanged.Send(msg);
+
+            var message = new MessageNewOrder(_config.GetValue<string>("SubscriptionName"));
 
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
-                foreach (var message in messages)
+                var readed = await message.Receive();
+                if (readed != null)
                 {
-                    var readed = await message.Receive();
-                    if (readed != null)
-                    {
-                        await Processar(readed);
-                    }
+                    await Processar(readed);
                 }
 
                 await Task.Delay(200, stoppingToken);
