@@ -55,7 +55,7 @@ namespace Geekburger.Order.Services
 
         private async Task SendMessage(PayRequest pay, EnumOrderState state)
         {
-            var order = await _orderRepository.GetById(pay.OrderId, pay.RequesterId);
+            var order = await _orderRepository.GetById(pay.OrderId);
 
             var msgOrderChanged = new OrderChanged()
             {

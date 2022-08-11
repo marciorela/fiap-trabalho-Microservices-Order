@@ -62,7 +62,7 @@ namespace Geekburger.Order.Data.Repositories
             return await _ctx.OrdersPayments.FirstOrDefaultAsync(p => p.OrderId == orderId && p.RequesterId == requesterId);
         }
 
-        public async Task<Domain.Entities.Order?> GetById(int orderId, int requesterId)
+        public async Task<Domain.Entities.Order?> GetById(int orderId)
         {
             return await _ctx.Orders.FirstOrDefaultAsync(p => p.OrderId == orderId);
         }
