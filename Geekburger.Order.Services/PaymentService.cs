@@ -24,7 +24,7 @@ namespace Geekburger.Order.Services
         {
             var state = EnumOrderState.Paid;
 
-            var payment = await _orderRepository.GetById(pay.OrderId, pay.RequesterId);
+            var payment = await _orderRepository.GetPaymentById(pay.OrderId, pay.RequesterId);
             if (payment == null)
             {
                 await _orderRepository.AddPayment(pay);
@@ -55,14 +55,17 @@ namespace Geekburger.Order.Services
 
         private async Task SendMessage(PayRequest pay, EnumOrderState state)
         {
+            var order = await _orderRepository.GetById(pay.OrderId, pay.RequesterId);
+
             var msgOrderChanged = new OrderChanged()
             {
                 OrderId = pay.OrderId,
                 StoreName = pay.StoreName,
-                State = state.ToString()
+                State = state.ToString(),
+                Total = order is not null ? order.Total : 0
             };
 
-            var msg = new MessageOrderChanged(_config.GetSection("SubscriptionName").Value);
+            var msg = new MessageOrderChanged();
             await msg.Send(msgOrderChanged);
         }
     }

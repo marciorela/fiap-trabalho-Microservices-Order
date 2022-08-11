@@ -49,7 +49,7 @@ namespace Geekburger.Order.Data.Repositories
 
         public async Task UpdateOrderState(int orderId, int requesterId, EnumOrderState state)
         {
-            var payment = await GetById(orderId, requesterId);
+            var payment = await GetPaymentById(orderId, requesterId);
             if (payment != null)
             {
                 payment.State = state.ToString();
@@ -57,9 +57,14 @@ namespace Geekburger.Order.Data.Repositories
             }
         }
 
-        public async Task<Payment?> GetById(int orderId, int requesterId)
+        public async Task<Payment?> GetPaymentById(int orderId, int requesterId)
         {
             return await _ctx.OrdersPayments.FirstOrDefaultAsync(p => p.OrderId == orderId && p.RequesterId == requesterId);
+        }
+
+        public async Task<Domain.Entities.Order?> GetById(int orderId, int requesterId)
+        {
+            return await _ctx.Orders.FirstOrDefaultAsync(p => p.OrderId == orderId);
         }
 
         public async Task<Payment> AddPayment(PayRequest pay)
@@ -84,7 +89,7 @@ namespace Geekburger.Order.Data.Repositories
 
         public async Task<bool> PaymentExists(int orderId, int requesterId)
         {
-            return await GetById(orderId, requesterId) != null;
+            return await GetPaymentById(orderId, requesterId) != null;
         }
     }
 }

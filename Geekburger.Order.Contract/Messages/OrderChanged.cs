@@ -7,5 +7,7 @@
         public string StoreName { get; set; }
 
         public string State { get; set; }
+
+        public double Total { get; set; }
     }
 }
