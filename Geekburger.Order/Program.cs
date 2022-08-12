@@ -1,3 +1,4 @@
+using Geekburger.Extensions;
 using Geekburger.Order.Data.Repositories;
 using Geekburger.Order.Database;
 using Geekburger.Order.Services;
@@ -24,6 +25,11 @@ var app = builder.Build();
 //}
 
 await app.HandleMessageNewOrder();
+
+app.Services.Execute<OrderDbContext>((context) =>
+{
+    context.Database.EnsureCreated();
+});
 
 app.UseHttpsRedirection();
 
