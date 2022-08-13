@@ -1,5 +1,5 @@
 ﻿using Geekburger.Order.Data.Repositories;
-using GeekBurguer.UI.Contract;
+using Geekburger.Order.Domain.Messages;
 using Messages.Service.Messages;
 using Messages.Service.Models;
 using Microsoft.AspNetCore.Builder;

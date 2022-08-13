@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeekBurguer.UI.Contract" Version="20.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Geekburger.Order.Contract\Geekburger.Order.Contract.csproj" />
     <ProjectReference Include="..\Geekburger.Order.Database\Geekburger.Order.Database.csproj" />
     <ProjectReference Include="..\Geekburger.Order.Domain\Geekburger.Order.Domain.csproj" />

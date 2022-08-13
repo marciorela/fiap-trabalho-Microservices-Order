@@ -2,7 +2,7 @@
 using Geekburger.Order.Contract.Enums;
 using Geekburger.Order.Database;
 using Geekburger.Order.Domain.Entities;
-using GeekBurguer.UI.Contract;
+using Geekburger.Order.Domain.Messages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,23 +23,23 @@ namespace Geekburger.Order.Data.Repositories
             // GRAVA OS DADOS DA ORDEM
             await _ctx.Orders.AddAsync(new Domain.Entities.Order()
             {
-                OrderId = order.orderId,
-                StoreName = order.storeName,
-                Total = (double)order.total
+                OrderId = order.OrderId,
+                StoreName = order.StoreName,
+                Total = new Random(100000).Next() //TODO: ESTÁ FALTANDO O TOTAL (double)order.Total
             });
 
             // GRAVA A LISTA DE PRODUTOS
-            var products = order.products.Select(p => new Domain.Entities.Product()
+            var product = order.products.Select(p => new Domain.Entities.Product()
             {
-                OrderId = order.orderId,
+                OrderId = order.OrderId,
                 ProductId = p.ProductId
             });
-            await _ctx.OrdersProducts.AddRangeAsync(products);
+            await _ctx.OrdersProducts.AddRangeAsync(product);
 
             // GRAVA A LISTA DE PRODUCTIONS
-            var productions = order.productionId.Select(p => new Domain.Entities.Production()
+            var productions = order.ProductionIds.Select(p => new Domain.Entities.Production()
             {
-                OrderId = order.orderId,
+                OrderId = order.OrderId,
                 ProductionId = p
             });
             await _ctx.OrdersProduction.AddRangeAsync(productions);

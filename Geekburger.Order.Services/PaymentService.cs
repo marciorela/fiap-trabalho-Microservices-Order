@@ -20,8 +20,14 @@ namespace Geekburger.Order.Services
             _config = config;
         }
 
-        public async Task RegisterPayment(PayRequest pay)
+        public async Task<string> RegisterPayment(PayRequest pay)
         {
+            var order = await _orderRepository.GetById(pay.OrderId);
+            if (order is null)
+            {
+                return "Ordem não encontrada.";
+            }
+
             var state = EnumOrderState.Paid;
 
             var payment = await _orderRepository.GetPaymentById(pay.OrderId, pay.RequesterId);
@@ -40,6 +46,8 @@ namespace Geekburger.Order.Services
             }
 
             await SendMessage(pay, state);
+
+            return "";
         }
 
         private EnumOrderState CheckNewState(PayRequest pay)

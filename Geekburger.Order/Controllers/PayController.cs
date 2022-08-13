@@ -22,9 +22,23 @@ namespace Geekburger.Order.Controllers
         [HttpPost("pay")]
         public async Task<IActionResult> PostPay(PayRequest pay)
         {
-            await _paymentService.RegisterPayment(pay);
+            try
+            {
+                var result = await _paymentService.RegisterPayment(pay);
+                if (string.IsNullOrEmpty(result))
+                {
+                    return Ok();
+                }
 
-            return Ok();
+                return NotFound(new { errorMessage = result });
+            } 
+            catch (Exception e)
+            {
+                return StatusCode(500, new
+                {
+                    errorMessage = e.Message
+                });
+            }
         }
     }
 }
