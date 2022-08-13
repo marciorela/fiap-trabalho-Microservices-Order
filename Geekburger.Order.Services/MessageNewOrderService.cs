@@ -1,4 +1,5 @@
-﻿using Geekburger.Order.Data.Repositories;
+﻿using Geekburger.Extensions;
+using Geekburger.Order.Data.Repositories;
 using Geekburger.Order.Domain.Messages;
 using Messages.Service.Messages;
 using Messages.Service.Models;
@@ -33,26 +34,18 @@ namespace Geekburger.Order.Services
             Console.WriteLine(received.MessageId.ToString());
 
             var x = Encoding.UTF8.GetString(received.Body);
-            var userWithLessOffer = JsonConvert.DeserializeObject<NewOrder>(x);
+            var newOrder = JsonConvert.DeserializeObject<NewOrder>(x);
 
             // ASSIM QUE RECEBER A MENSAGEM, GRAVA NO BANCO
-            if (userWithLessOffer is not null)
+            if (newOrder is not null && _services is not null)
             {
-                var factory = _services?.GetService<IServiceScopeFactory>();
-
-                if (factory is not null)
+                await _services.ExecuteAsync<OrderRepository>(async (_orderRepository) =>
                 {
-                    using var scope = factory.CreateScope();
-
-                    var _orderRepository = scope.ServiceProvider.GetService<OrderRepository>();
-                    if (_orderRepository is not null)
+                    if (await _orderRepository.GetById(newOrder.OrderId) is null)
                     {
-                        if (_orderRepository is not null)
-                        {
-                            await _orderRepository.Add(userWithLessOffer);
-                        }
+                        await _orderRepository.Add(newOrder);
                     }
-                }
+                });
             }
         }
     }

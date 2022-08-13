@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Geekburger.Services\Geekburger.Extensions\Geekburger.Extensions.csproj" />
     <ProjectReference Include="..\..\Geekburger.Services\Messages.Service\Messages.Service.csproj" />
     <ProjectReference Include="..\Geekburger.Order.Contract\Geekburger.Order.Contract.csproj" />
     <ProjectReference Include="..\Geekburger.Order.Data\Geekburger.Order.Data.csproj" />
