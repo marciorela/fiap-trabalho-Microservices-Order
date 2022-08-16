@@ -29,10 +29,10 @@ namespace Geekburger.Order.Data.Repositories
             });
 
             // GRAVA A LISTA DE PRODUTOS
-            var product = order.products.Select(p => new Domain.Entities.Product()
+            var product = order.Products.Select(p => new Domain.Entities.Product()
             {
                 OrderId = order.OrderId,
-                ProductId = p.ProductId
+                ProductId = p
             });
             await _ctx.OrdersProducts.AddRangeAsync(product);
 
@@ -47,7 +47,7 @@ namespace Geekburger.Order.Data.Repositories
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task UpdateOrderState(int orderId, int requesterId, EnumOrderState state)
+        public async Task UpdateOrderState(Guid orderId, Guid requesterId, EnumOrderState state)
         {
             var payment = await GetPaymentById(orderId, requesterId);
             if (payment != null)
@@ -57,12 +57,12 @@ namespace Geekburger.Order.Data.Repositories
             }
         }
 
-        public async Task<Payment?> GetPaymentById(int orderId, int requesterId)
+        public async Task<Payment?> GetPaymentById(Guid orderId, Guid requesterId)
         {
             return await _ctx.OrdersPayments.FirstOrDefaultAsync(p => p.OrderId == orderId && p.RequesterId == requesterId);
         }
 
-        public async Task<Domain.Entities.Order?> GetById(int orderId)
+        public async Task<Domain.Entities.Order?> GetById(Guid orderId)
         {
             return await _ctx.Orders.FirstOrDefaultAsync(p => p.OrderId == orderId);
         }
@@ -87,7 +87,7 @@ namespace Geekburger.Order.Data.Repositories
             return payment;
         }
 
-        public async Task<bool> PaymentExists(int orderId, int requesterId)
+        public async Task<bool> PaymentExists(Guid orderId, Guid requesterId)
         {
             return await GetPaymentById(orderId, requesterId) != null;
         }

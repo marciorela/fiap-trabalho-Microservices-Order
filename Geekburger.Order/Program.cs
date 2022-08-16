@@ -2,6 +2,7 @@ using Geekburger.Extensions;
 using Geekburger.Order.Data.Repositories;
 using Geekburger.Order.Database;
 using Geekburger.Order.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

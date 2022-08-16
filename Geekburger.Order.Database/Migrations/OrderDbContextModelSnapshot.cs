@@ -15,13 +15,13 @@ namespace Geekburger.Order.Database.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.7");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
 
             modelBuilder.Entity("Geekburger.Order.Domain.Entities.Order", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<Guid>("OrderId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("StoreName")
                         .IsRequired()
@@ -38,11 +38,11 @@ namespace Geekburger.Order.Database.Migrations
 
             modelBuilder.Entity("Geekburger.Order.Domain.Entities.Payment", b =>
                 {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("RequesterId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("RequesterId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CardNumber")
                         .HasMaxLength(16)
@@ -83,10 +83,10 @@ namespace Geekburger.Order.Database.Migrations
 
             modelBuilder.Entity("Geekburger.Order.Domain.Entities.Product", b =>
                 {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("ProductId")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("OrderId", "ProductId");
@@ -96,11 +96,11 @@ namespace Geekburger.Order.Database.Migrations
 
             modelBuilder.Entity("Geekburger.Order.Domain.Entities.Production", b =>
                 {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("ProductionId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("ProductionId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("OrderId", "ProductionId");
 

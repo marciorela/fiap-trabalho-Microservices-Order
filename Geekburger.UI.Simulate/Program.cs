@@ -3,16 +3,21 @@ using GeekBurguer.UI.Contracts.Commands.Input;
 using Messages.Service.Messages;
 
 
+var orderId = Guid.NewGuid();
 var msg = new MessageNewOrder();
 await msg.Send(new NewOrder()
 {
-    OrderId = 1002,
+    OrderId = orderId,
     StoreName = "morumbi",
-    ProductionIds = new() { 1, 2, 3, 4 },
-    products = new() {
-            new InputProductCommand() { ProductId = 8989 },
-            new InputProductCommand() { ProductId = 1233 },
-            new InputProductCommand() { ProductId = 1234 },
-            new InputProductCommand() { ProductId = 1235 },
-        }
+    ProductionIds = new() { 
+        Guid.NewGuid(), 
+        Guid.NewGuid(), 
+        Guid.NewGuid(), 
+    },
+    Products = new() {
+        Guid.NewGuid(),
+        Guid.NewGuid(),
+    }    
 });
+
+Console.WriteLine(orderId);

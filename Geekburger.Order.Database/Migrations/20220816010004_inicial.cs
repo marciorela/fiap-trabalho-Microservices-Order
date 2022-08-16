@@ -13,8 +13,7 @@ namespace Geekburger.Order.Database.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    OrderId = table.Column<Guid>(type: "TEXT", nullable: false),
                     StoreName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Total = table.Column<double>(type: "REAL", nullable: false)
                 },
@@ -27,8 +26,8 @@ namespace Geekburger.Order.Database.Migrations
                 name: "OrdersPayments",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "INTEGER", nullable: false),
-                    RequesterId = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrderId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    RequesterId = table.Column<Guid>(type: "TEXT", nullable: false),
                     RequestTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     StoreName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     PayType = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
@@ -53,8 +52,8 @@ namespace Geekburger.Order.Database.Migrations
                 name: "OrdersProduction",
                 columns: table => new
                 {
-                    ProductionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    OrderId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ProductionId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    OrderId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,8 +70,8 @@ namespace Geekburger.Order.Database.Migrations
                 name: "OrdersProducts",
                 columns: table => new
                 {
-                    ProductId = table.Column<string>(type: "TEXT", nullable: false),
-                    OrderId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ProductId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    OrderId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

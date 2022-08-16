@@ -10,8 +10,8 @@ namespace Geekburger.Order.Domain.Entities
 {
     public class Payment
     {
-        public int OrderId { get; set; }
-        public int? RequesterId { get; set; }
+        public Guid OrderId { get; set; }
+        public Guid? RequesterId { get; set; }
 
         public DateTime RequestTime { get; set; } = DateTime.Now;
 

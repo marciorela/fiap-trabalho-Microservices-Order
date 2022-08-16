@@ -1,8 +1,10 @@
-﻿namespace Geekburger.Order.Contract.Messages
+﻿using System;
+
+namespace Geekburger.Order.Contract.Messages
 {
     public class OrderChanged
     {
-        public int OrderId { get; set; }
+        public Guid OrderId { get; set; }
 
         public string StoreName { get; set; }
 

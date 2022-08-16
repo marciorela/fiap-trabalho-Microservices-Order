@@ -4,9 +4,9 @@ namespace Geekburger.Order.Domain.Entities
 {
     public class Product
     {
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
     
         [Required]
-        public int OrderId { get; set; }
+        public Guid OrderId { get; set; }
     }
 }
